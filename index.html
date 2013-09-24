@@ -1,0 +1,960 @@
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>PLC</title>
+	
+	
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/bootstrap-glyphicons.css" rel="stylesheet">
+	<link href="css/datepicker.css" rel="stylesheet">
+	<script src="js/libs/jquery/jquery-1.7.1.min.js"></script>		
+	<script src="js/libs/underscore/underscore-min.js"></script>
+	<script src="js/libs/backbone/backbone-min.js"></script>
+	<script src="js/libs/bootstrap/bootstrap.min.js"></script>
+	<script src="js/libs/bootstrap/bootstrap-datepicker.js"></script>
+
+	<script type="text/javascript" src="js/codigo-app.js?v=13"></script>	
+	<script type="text/javascript" src="js/codigo-consulta.js?v=13"></script>
+	<script type="text/javascript" src="js/codigo-solicitudes.js?v=13"></script>
+	<script type="text/javascript" src="js/codigo-router.js?v=13"></script>
+	<script type="text/javascript" src="js/codigo-models.js?v=13"></script>
+	<script type="text/javascript" src="js/codigo-params.js?v=13"></script>
+
+</head>
+
+<body>
+		<!-- CONTENIDO -->
+	<div class="container">
+
+		<div class="row">
+			
+			<div class="col-lg-12 text-center">
+				<img src="img/nuevosuperior02.png" class="img-rounded" style="width:100%">
+			</div>
+
+			
+			<!-- BARRA NAVEGACION -->
+
+			<div class="navbar col-lg-12">
+				
+
+				<div class="collapse navbar-collapse navbar-ex1-collapse">
+				    <ul class="nav navbar-nav">
+
+				        <li class="consulta active"><a href="#">Consulta</a></li>
+						<li class="gestion_servicios"><a href="#/solicitudes">Gestión Servicios</a></li>
+						<li class="administracion"><a href="#">Administración</a></li>
+				      
+				    </ul>
+				    
+				    <ul class="nav navbar-nav navbar-right">
+				      	<li class="navbar-text"><p>Carlos Ramirez</p></li>
+						<li><a onclick="location.href='login.html'">(cerrar sesión)</a></li>
+				    </ul>
+				</div>
+
+				<ul class="breadcrumb">
+				  <li><a onclick="location.href='mainmenu.html'">Inicio</a></li>
+				  <li class="active">Consulta</li>
+				</ul>
+			</div>	
+
+			<div class="seccion consulta col-lg-12"></div>
+
+			<div class="seccion solicitudes col-lg-12"></div> 
+
+		</div>
+
+
+
+
+	</div>	
+
+
+      	<!-- TEMPLATES -->
+
+    <!-- ------------------------------- -->
+    <!-- ----------CONSULTA------------	 -->
+    <!-- ------------------------------- -->
+
+
+	<!-- ConsultaMainView -->
+	<script type="text/template" id="template_ConsultaMainView"> 
+	
+		<div class="row">
+			<div class="consulta busqueda well col-lg-12"></div>
+			<div class="consulta info_general well col-lg-12"></div>
+			<div class="consulta ficha well col-lg-12"></div>
+	</script>
+
+	<!-- Consulta - Busqueda -->
+	<script type="text/template" id="template_ConsultaBusquedaView"> 
+		<div class="form-group row">
+		  	<div class="col-lg-6">
+		  		<form class="form-horizontal" role="form">
+
+				  	<div class="form-group">
+					  	<label  class="col-lg-3 control-label">RUT:</label>
+					  	<div class="col-lg-9">
+					  		<div class="input-group">
+				              	<input type="text" class="form-control rut" placeholder="Ingrese RUT" value="<%= rut %>">
+				              	<span class="btn btn-default input-group-addon input-large">Buscar</span>
+				            </div>
+					  	</div>
+					  	
+				  	</div>
+
+				</form>
+
+
+		  	</div>
+		  	<div class="col-lg-6">
+			  	<label class="pull-right">
+		  			<H3>CONSULTA FICHA BENEFICIARIO</H3>
+		 	 	</label>
+		  	</div>
+
+	  
+		  	
+		</div>	
+	</script>
+
+	<!-- Consulta - InfoGeneral -->
+	<script type="text/template" id="template_ConsultaInfoGeneralView"> 
+		<div class="row">
+			<div class="col-lg-3">
+				<form class="form-horizontal" role="form">
+				  	<div class="form-group">
+					  	<label  class="col-lg-6 control-label">TIPO:</label>
+					  	<div class="col-lg-6">
+					  		<input type="text" class="form-control"  value="<%= tipo_persona_cod %>" disabled>
+					  	</div>
+				  	</div>
+				</form>
+
+			</div>
+
+			<div class="col-lg-4">
+			  
+				<form class="form-horizontal" role="form">
+				  	<div class="form-group">
+					  	<label  class="col-lg-6 control-label">NOMBRES:</label>
+					  	<div class="col-lg-6">
+					  		<input type="text" class="form-control"  value="<%= nombre %>" disabled>
+					  	</div>
+				  	</div>
+				  	<div class="form-group">
+					  	<label  class="col-lg-6 control-label">RUT:</label>
+					  	<div class="col-lg-6">
+					  		<input type="text" class="form-control"  value="<%= rut %>" disabled>
+					  	</div>
+				  	</div>
+				</form>
+
+
+			</div>
+
+			<div class="col-lg-4">
+
+				<form class="form-horizontal" role="form">
+				  	<div class="form-group">
+					  	<label  class="col-lg-6 control-label">APELLIDO PATERNO:</label>
+					  	<div class="col-lg-6">
+					  		<input type="text" class="form-control"  value="<%= apellido_paterno %>" disabled>
+					  	</div>
+				  	</div>
+				  	<div class="form-group">
+					  	<label  class="col-lg-6 control-label">APELLIDO MATERNO:</label>
+					  	<div class="col-lg-6">
+					  		<input type="text" class="form-control"  value="<%= apellido_materno %>" disabled>
+					  	</div>
+				  	</div>
+				</form>
+
+
+			</div>	
+		</div> 
+	</script>
+
+	<!-- Consulta - Ficha -->
+	<script type="text/template" id="template_ConsultaFichaView"> 
+		
+					
+		<ul class="nav nav-tabs" id="myTab">
+		  	<li class="tab localizacion active"><a href="#localizacion" data-toggle="tab">Localización</a></li>
+		  	<li class="tab datos_personales"><a href="#datos_personales" data-toggle="tab">Datos Personales</a></li>
+		  	<li class="tab servicios_solicitados"><a href="#servicios_solicitados" data-toggle="tab">Servicios Solicitados</a></li>
+		  	<li class="tab grupo_hogar"><a href="#grupo_hogar" data-toggle="tab">Grupo Hogar</a></li>
+		  	<li class="tab organizaciones"><a href="#organizaciones" data-toggle="tab">Organizaciones</a></li>
+		  	<li class="tab miembros"><a href="#miembros" data-toggle="tab">Miembros</a></li>
+		</ul>
+
+		<div class="tab-content">
+
+			<div class="tab-pane well consulta info localizacion active" id="localizacion"></div>
+			<div class="tab-pane well consulta info datos_personales" id="datos_personales"></div>
+			<div class="tab-pane well consulta info servicios_solicitados" id="servicios_solicitados"></div>
+			<div class="tab-pane well consulta info grupo_hogar" id="grupo_hogar"></div>
+			<div class="tab-pane well consulta info organizaciones" id="organizaciones"></div>
+			<div class="tab-pane well consulta info miembros" id="miembros"></div>
+		</div>
+			
+	</script>
+
+
+	<!-- Consulta - Localizacion -->
+	<script type="text/template" id="template_ConsultaLocalizacionView"> 
+		
+					
+		<div class="row">
+			<div class="col-lg-6">
+			  	<form class="form-horizontal" role="form">
+				  	<div class="form-group">
+					  	<label  class="col-lg-4 control-label">DIRECCION:</label>
+					  	<div class="col-lg-8">
+					  		<input type="text" class="form-control"  value="<%= direccion %>" disabled>
+					  	</div>
+				  	</div>
+
+				  	<div class="form-group">
+					  	<label  class="col-lg-4 control-label">COMUNA:</label>
+					  	<div class="col-lg-8">
+					  		<input type="text" class="form-control"  value="<%= _embedded.comuna._label %>" disabled>
+					  	</div>
+				  	</div>
+
+				  	<div class="form-group">
+					  	<label  class="col-lg-4 control-label">SECTOR:</label>
+					  	<div class="col-lg-8">
+					  		<input type="text" class="form-control"  value="<%= _embedded.sector._label %>" disabled>
+					  	</div>
+				  	</div>
+
+				  	<div class="form-group">
+					  	<label  class="col-lg-4 control-label">LOCALIDAD:</label>
+					  	<div class="col-lg-8">
+					  		<input type="text" class="form-control"  value="<%= localidad %>" disabled>
+					  	</div>
+				  	</div>
+
+				  	<div class="form-group">
+					  	<label  class="col-lg-4 control-label">COMUNIDAD:</label>
+					  	<div class="col-lg-8">
+					  		<input type="text" class="form-control"  value="<%= comunidad %>" disabled>
+					  	</div>
+				  	</div>
+
+				  	<div class="form-group">
+					  	<label  class="col-lg-4 control-label">FONO FIJO:</label>
+					  	<div class="col-lg-8">
+					  		<input type="text" class="form-control"  value="<%= fono_fijo %>" disabled>
+					  	</div>
+				  	</div>
+
+				  	<div class="form-group">
+					  	<label  class="col-lg-4 control-label">FONO CELULAR:</label>
+					  	<div class="col-lg-8">
+					  		<input type="text" class="form-control"  value="<%= fono_celular %>" disabled>
+					  	</div>
+				  	</div>
+
+				  	<div class="form-group">
+					  	<label  class="col-lg-4 control-label">E-MAIL:</label>
+					  	<div class="col-lg-8">
+					  		<input type="text" class="form-control"  value="<%= email %>" disabled>
+					  	</div>
+				  	</div>
+
+				  	<div class="form-group">
+					  	<label  class="col-lg-4 control-label">COORDENADAS:</label>
+
+					  	<div class="col-lg-8">
+					  		<form class="form-horizontal" role="form">
+					  			<div class="form-group">
+					  				<div class="input-group col-lg-6">
+							  			<input type="text" class="form-control" placeholder="" value="<%= latitud %>" disabled>
+									  	<span class="input-group-addon">LAT.(X)</span>
+									</div>
+									<div class="input-group col-lg-6">
+							  			<input type="text" class="form-control" value="<%= longitud %>" disabled>
+									  	<span class="input-group-addon">LON.(Y)</span>
+									</div>	
+					  			</div>
+					  		</form>
+
+					  	</div>
+				  	</div>
+
+				</form>  
+
+			</div>
+			<div class="col-lg-6">
+				<a href="#">
+				    <img class="img-rounded" src="img/map.jpg">
+				</a>
+			</div>
+		</div>
+			
+	</script>
+
+
+	<!-- Consulta - Datos personales -->
+	<script type="text/template" id="template_ConsultaDatosPersonalesView"> 
+		
+					
+		<div class="form-inline row">
+			<div class="col-lg-6">
+				<form class="form-horizontal" role="form">
+				  	<div class="form-group">
+					  	<label  class="col-lg-6 control-label">N° EXPEDIENTE:</label>
+					  	<div class="col-lg-6">
+					  		<input type="text" class="form-control"  value="<%= numero_expediente %>" disabled>
+					  	</div>
+				  	</div>
+				</form>
+				
+			</div>
+			<div class="col-lg-6">
+				<form class="form-horizontal" role="form">
+				  	<div class="form-group">
+					  	<label  class="col-lg-6 control-label">FICHA DE PROTECCIÓN SOCIAL:</label>
+					  	<div class="col-lg-6">
+					  		<input type="text" class="form-control"  value="<%= ficha_proteccion_social %>" disabled>
+					  	</div>
+				  	</div>
+				</form>
+
+			</div>
+		</div>
+
+		<hr size="3"  />
+
+
+		<div class="row">
+
+			<div class="col-lg-6">
+
+				<form class="form-horizontal" role="form">
+
+				  	<div class="form-group">
+					  	<label  class="col-lg-4 control-label">FECHA DE NACIMIENTO:</label>
+					  	<div class="col-lg-6">
+					  		<div class="input-group">
+				              	<input type="text" class="form-control date" value="<%= fecha_nacimiento %>">
+				              	<span class="btn btn-default input-group-addon input-large calendar"><i class="glyphicon glyphicon-calendar"></i></span>
+				            </div>
+					  	</div>
+					  	
+				  	</div>
+
+				  	<div class="form-group estado_civil">
+
+					</div>
+
+					<div class="form-group prevision">
+
+					</div>
+
+					<div class="form-group escolaridad">
+
+					</div>
+
+					<div class="form-group actividad_laboral">
+
+					</div>
+
+				</form>
+
+			</div>
+
+			<div class="col-lg-5 ">
+				<div class="row">
+					<label class="col-lg-12">PROGRAMAS SOCIALES:</label>
+					<textarea rows="6" class="col-lg-12 form-control" disabled><%= programas_sociales %></textarea>
+				</div>
+			</div>
+
+		</div>	
+
+			
+	</script>
+
+
+	<!-- Consulta - Servicios Solicitados -->
+	<script type="text/template" id="template_ConsultaServiciosSolicitadosView"> 
+
+		<label class="col-lg-3"><%= length %> solicitudes encontradas</label>
+			<table class="table table-striped solicitudes">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha Solicitud</th>
+                  <th>RUT</th>
+                  <th>Servicio</th>
+                  <th>Subtipo</th>
+                  <th>Estado</th>
+                  <th>Fecha</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+
+		</div>
+			
+	</script>
+
+	<!-- Consulta - Solicitudes - Item-->
+	<script type="text/template" id="template_ConsultaServiciosSolicitadosItemView"> 
+		<td><%- id %></td>
+		<td><%- fecha %></td>
+		<td><%- persona_rut %></td>
+		<td>Servicio</td>
+		<td><%- _embedded.subtipo._label %></td>
+		<td><%- _embedded.estado._label %></td>
+        <td><%- fecha_estado_actual %></td>
+      	<td><a href="/consulta/persona/<%- persona_rut %>"><i class="glyphicon glyphicon-search"></i></a></td>
+	</script>
+
+
+	<!-- Consulta - Grupo Hogar -->
+	<script type="text/template" id="template_ConsultaGrupoHogarView"> 
+		<div class="accordion hogares" id="accordion2">
+		  
+		</div>
+		
+	</script>
+
+		<!-- Consulta - Grupo Hogar -->
+	<script type="text/template" id="template_ConsultaGrupoHogarItemView"> 
+		
+	  <div class="accordion-group">
+	    <div class="accordion-heading">
+	      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+	        HOGAR-<%= _label %>: <%= cantmiembros %> personas encontradas
+	      </a>
+	    </div>
+	    <div id="collapseOne" class="accordion-body collapse in">
+	      <div class="accordion-inner">
+		        <table class="table table-striped miembros">
+	              <thead>
+	                <tr>
+	                  <th>RUT</th>
+	                  <th>Nombre</th>
+	                  <th>Rol/Relación con Jefe de Hogar</th>
+	                </tr>
+	              </thead>
+	              <tbody>
+	                
+	              </tbody>
+	            </table>
+	      </div>
+	    </div>
+	  </div>
+
+		
+	</script>
+
+			<!-- Consulta - Grupo Hogar -->
+	<script type="text/template" id="template_ConsultaGrupoHogarMiembrosItemView"> 
+		
+	    <td><%= _label %></td>
+	    <td><%= _embedded.persona._label %></td>
+	    <td><%= condicion_en_hogar %></td>
+
+		
+	</script>
+
+
+	<!-- Consulta - Organizaciones -->
+	<script type="text/template" id="template_ConsultaOrganizacionesView"> 
+
+		<label class="col-lg-3"><%= length %> organizaciones asociadas</label>
+		<table class="table table-striped organizaciones">
+          <thead>
+            <tr>
+              <th>RUT</th>
+              <th>Organización</th>
+              <th>Relación/Rol</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+			
+	</script>
+
+
+	<!-- Consulta - Organizaciones - Item-->
+	<script type="text/template" id="template_ConsultaOrganizacionesItemView"> 
+      <td><%= persona_juridica_rut %></td>
+      <td><%= _embedded.organizacion._label %></td>
+      <td><%= _embedded.rol._label %></td>
+	</script>
+
+		<!-- Consulta - Miembros -->
+	<script type="text/template" id="template_ConsultaMiembrosView"> 
+
+		<label class="col-lg-3"><%= length %> miembros encontrados</label>
+			<table class="table table-striped miembros">
+              <thead>
+                <tr>
+                  <th>Rut</th>
+                  <th>Nombre</th>
+                  <th>Rol/Relación</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+
+		</div>
+			
+	</script>
+
+
+	<!-- Consulta - Miembros - Item-->
+	<script type="text/template" id="template_ConsultaMiembrosItemView"> 
+      <td><%= persona_natural_rut %></td>
+      <td><%= _embedded.miembro._label %></td>
+      <td><%= _embedded.rol._label %></td>
+      <td><i class="glyphicon glyphicon-search"></i></td>
+	</script>
+
+
+    <!-- ------------------------------- -->
+    <!-- ----------SOLICITUDES----------	 -->
+    <!-- ------------------------------- -->
+
+
+    <!-- SolicitudesMainView -->
+	<script type="text/template" id="template_SolicitudesMainView"> 
+		
+		<div class="row">
+			<div class="well">
+				<div class="well filtro">
+					
+				</div>
+
+				<div class="col-lg-12 servicios_solicitados">
+
+				</div>
+			</div>
+		</div>	
+
+	</script>
+
+
+	<!-- SolicitudesFiltroView -->
+	<script type="text/template" id="template_SolicitudesFiltroView"> 
+		
+		<div class="col-lg-12">
+			
+			<H2>Ayudas Sociales</H2>
+
+
+		</div>	
+
+		<form class="form-horizontal" role="form">
+		  	<div class="form-group">
+			  	
+			  	<label  class="col-lg-1 control-label">Rut:</label>
+			  	<div class="col-lg-2">
+			  		<input type="text" class="form-control filtro rut"  value="">
+			  	</div>
+			  	<label  class="col-lg-2 control-label">Fecha Solicitud:</label>
+			  	<div class="col-lg-3">
+					<form class="form-horizontal" role="form">
+			  			<div class="form-group">
+			  				<div class="input-group col-lg-4">
+					  			<input type="text" class="form-control col-lg-4" value="">
+							</div>
+							<label  class="col-lg-2 control-label">al</label>
+							<div class="input-group col-lg-4">
+					  			<input type="text" class="form-control" value="">
+							</div>	
+			  			</div>
+			  		</form>
+			  	</div>
+			  	<label  class="col-lg-1 control-label">Estado:</label>
+			  	<div class="col-lg-2">
+			  		<select class="form-control"><option>En evaluación</option></select>
+			  	</div>
+			  	
+		  	</div>
+		</form>
+
+	</script>
+
+
+	<!-- SolicitudesServiciosSolicitadosListView -->
+	<script type="text/template" id="template_SolicitudesServiciosSolicitadosListView"> 
+		
+		<label class="control-label">Se encontraron <%= length %> solicitudes</label>
+		<table class="table table-striped solicitudes">
+          <thead>
+            <tr>
+              <th>ID Sol.</th>
+              <th>Fecha Solicitud</th>
+              <th>RUT</th>
+              <th>Sector</th>
+              <th>Subtipo</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+           
+          </tbody>
+        </table>
+        
+        <div class="row">
+	        <div class="col-lg-4">
+	        	<span>Exportar resultados a Excel <i class="glyphicon glyphicon-download-alt"></i></span>	
+	        </div>
+
+	        <div class="col-lg-4">
+		        <ul class="pagination">
+				  <li class="active"><a href="#">&laquo;</a></li>
+				  <li><a href="#">1</a></li>
+				  <li><a href="#">2</a></li>
+				  <li><a href="#">3</a></li>
+				  <li><a href="#">4</a></li>
+				  <li><a href="#">5</a></li>
+				  <li><a href="#">&raquo;</a></li>
+				</ul>
+			</div>
+			<div class="col-lg-4">
+				<a class='btn btn-default pull-right' href='/solicitudes/nuevaSolicitud'>Nueva Solicitud</a>
+			</div>
+		</div>
+
+	</script>
+
+
+		<!-- SolicitudesServiciosSolicitadosListView -->
+	<script type="text/template" id="template_SolicitudesServiciosSolicitadosItemView"> 
+		
+		  <td><%= id %></td>
+		  <td><%= fecha %></td>
+		  <td><%= persona_rut %></td>
+		  <td>Sector</td>
+		  <td><%= _embedded.subtipo._label %></td>
+		  <td><%= _embedded.estado._label %></td>
+		  <td><%= fecha_estado_actual %></td>
+		  <td>
+		  	<span class="glyphicon glyphicon-search boton edicion"></span>
+		 	 <span class="glyphicon glyphicon-remove boton eliminar"></span>
+		  </td>
+
+	</script>
+
+	<!-- SolicitudesServiciosSolicitadosListView -->
+	<script type="text/template" id="template_SolicitudesNuevaSolicitudView"> 
+		
+		
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="btn close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title">CREAR/EDITAR - SOLICITUD</h4>
+		      </div>
+		      <div class="modal-body">
+					  	
+					<form class="form-horizontal" role="form">
+			  			<div class="form-group">
+			  				<label  class="col-lg-2 control-label">N° Solicitud</label>
+			  				<div class="input-group col-lg-4">
+					  			<input type="text" class="form-control col-lg-4" value="<%= id %>" disabled>
+							</div>
+							<label  class="col-lg-2 control-label">Versión</label>
+							<div class="input-group col-lg-4">
+					  			<input type="text" class="form-control" value="<%= version %>" disabled>
+							</div>	
+			  			</div>
+			  		</form>
+
+			  		<div class="row">
+
+					  	
+			  			<div class="col-lg-6">
+			  				<label  class="control-label">Beneficiario</label>
+					  		<div class="well">
+						  		<form class="form-horizontal" role="form">
+						  			<div class="form-group">
+						  				<label  class="col-lg-2 control-label">RUT:</label>
+						  				<div class="input-group col-lg-4">
+								  			<input type="text" class="form-control col-lg-4 persona_rut" value="<%= persona_rut %>">
+										</div>
+
+						  			</div>
+						  		</form>
+					  		
+
+						  		<form class="form-horizontal" role="form">
+						  			<div class="form-group">
+						  				<label  class="col-lg-2 control-label">NOMBRES:</label>
+						  				<div class="input-group col-lg-8">
+								  			<input type="text" class="form-control col-lg-4" value="<%= _embedded.persona._label %>" disabled>
+										</div>	
+						  			</div>
+						  		</form>
+					  		</div>
+			  			</div>
+
+			  			<div class="col-lg-6">
+			  				<label  class="control-label">Servicio</label>
+					  		<div class="well">
+				  				<form class="form-horizontal" role="form">
+						  			<div class="form-group">
+										<div class="input-group col-lg-6">
+								  			<input type="text" class="form-control" value="Ayuda Social" disabled>
+										</div>	
+						  			</div>
+						  		</form>
+
+						  		<form class="form-horizontal" role="form">
+						  			<div class="form-group subtipo_servicio">
+
+						  			</div>
+						  		</form>
+					  		</div>
+			  			</div>
+
+			  		</div>
+
+
+			  		<div class="row">
+
+					  	
+			  			<div class="col-lg-6">
+			  				<label  class="control-label">Detalle de la Solicitud (Información Pública)</label>
+					  		<div class="well">
+						  		<form class="form-horizontal" role="form">
+						  			<div class="form-group">
+										<textarea rows="6" class="col-lg-12 form-control detalle_publico"><%= detalle_publico %></textarea>
+						  			</div>
+						  		</form>
+
+					  		</div>
+			  			</div>
+
+			  			<div class="col-lg-6">
+			  				<label  class="control-label">Documentos Adjuntos</label>
+					  		<div class="well">
+				  				<form class="form-horizontal" role="form">
+						  			<div class="form-group">
+										<table class="table table-striped">
+								          <thead>
+								            <tr>
+								              	<th>NOMBRE DOCUMENTO</th>
+								              	<th>ACCIONES</th>
+								            </tr>
+								          </thead>
+								          <tbody>
+								           	<tr>
+								              	<td>Certificado de Antecedentes.pdf</td>
+								              	<td></td>
+								            </tr>
+								            <tr>
+								              	<td>Informe_Terreno.pdf</td>
+								              	<td></td>
+								            </tr>
+								          </tbody>
+								        </table>	
+						  			</div>
+						  		</form>
+
+					  		</div>
+			  			</div>
+
+			  		</div>
+			  		
+
+			  		<div class="row">
+
+					  	
+			  			<div class="col-lg-6">
+			  				<label  class="control-label">Detalle de la Solicitud (Información Confidencial)</label>
+					  		<div class="well">
+						  		<form class="form-horizontal" role="form">
+						  			<div class="form-group">
+										<textarea rows="6" class="col-lg-12 form-control detalle_privado"><%= detalle_privado %></textarea>	
+						  			</div>
+						  		</form>
+					  		
+					  		</div>
+			  			</div>
+
+			  			<div class="col-lg-6">
+			  				<label  class="control-label"><br></label>
+					  		<div class="well">
+				  				<form class="form-horizontal" role="form">
+						  			<div class="form-group">
+						  				<label  class="col-lg-5 control-label">Monto (costo/subsidio)(en $):</label>
+										<div class="input-group col-lg-4">
+								  			<input type="text" class="form-control monto_solicitud" value="<%= monto_solicitud %>" placeholder="50.000">
+										</div>	
+						  			</div>
+						  		</form>
+
+						  		<form class="form-horizontal" role="form">
+						  			<label  class="control-label">Referencia:</label>
+						  			<div class="form-group">
+									  	<div class="col-lg-12">
+									  		<textarea rows="2" class="col-lg-12 form-control referencia_solicitud"><%= referencia_solicitud %></textarea>
+									  	</div>
+						  			</div>
+						  		</form>
+					  		</div>
+			  			</div>
+
+			  		</div>
+			  		<form class="form-horizontal" role="form">
+
+
+
+			            <div class="form-group">
+				  			<div class="col-lg-6 form-group estado_solicitud">
+
+				  			</div>
+							<div class="col-lg-4 input-group">
+				              	<input type="text" class="form-control date" value="">
+				              	<span class="btn btn-default input-group-addon input-large calendar"><i class="glyphicon glyphicon-calendar"></i></span>
+				            </div>
+			  			</div>
+			  		</form>
+		
+		      </div>
+		      <div class="modal-footer">
+		      	<a class='btn btn-default cancel' data-dismiss="modal" href='/solicitudes' >Cerrar</a>
+		      	<a class='btn btn-primary save' >Guardar</a>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		
+
+	</script>
+
+
+
+
+
+
+
+    <!-- ------------------------------- -->
+    <!-- ----------PARÁMETROS-----------	 -->
+    <!-- ------------------------------- -->
+
+
+
+	<!-- Parametros - Tipo Estado Civil -->
+	<script type="text/template" id="template_ParametrosTipoEstadoCivilView"> 
+		<label  class="col-lg-4 control-label">ESTADO CIVIL:</label>
+	  	<div class="col-lg-6">
+	  		<select class="form-control select options"></select>
+	  	</div>
+
+	</script>
+
+
+	<!-- Parametros - Tipo Estado Civil - Opciones -->
+	<script type="text/template" id="template_ParametrosTipoEstadoCivilItemView"> 
+		<%= _label %>
+	</script>
+
+
+
+	<!-- Parametros - Prevision -->
+	<script type="text/template" id="template_ParametrosPrevisionView"> 
+		<label  class="col-lg-4 control-label">TIPO PREVISIÓN:</label>
+	  	<div class="col-lg-6">
+	  		<select class="form-control select options"></select>
+	  	</div>
+
+			
+	</script>
+
+
+	<!-- Parametros - Prevision - Opciones -->
+	<script type="text/template" id="template_ParametrosPrevisionItemView"> 
+		<%= _label %>
+	</script>
+
+
+	<!-- Parametros - Escolaridad -->
+	<script type="text/template" id="template_ParametrosEscolaridadView"> 
+		<label  class="col-lg-4 control-label">ESCOLARIDAD:</label>
+	  	<div class="col-lg-6">
+	  		<select class="form-control select options"></select>
+	  	</div>
+			
+	</script>
+
+
+	<!-- Parametros - Escolaridad - Opciones -->
+	<script type="text/template" id="template_ParametrosEscolaridadItemView"> 
+		<%= _label %>
+	</script>
+
+
+	<!-- Parametros - ActividadLaboral -->
+	<script type="text/template" id="template_ParametrosActividadLaboralView"> 
+		<label  class="col-lg-4 control-label">ACTIVIDAD LABORAL:</label>
+	  	<div class="col-lg-6">
+	  		<select class="form-control select options"></select>
+	  	</div>
+
+			
+	</script>
+
+
+	<!-- Parametros - ActividadLaboral - Opciones -->
+	<script type="text/template" id="template_ParametrosActividadLaboralItemView"> 
+		<%= _label %>
+	</script>
+
+
+
+	<!-- Parametros - SubtipoServicio -->
+	<script type="text/template" id="template_ParametrosSubtipoServicioView"> 
+		<label  class="col-lg-4 control-label">SUBTIPO:</label>
+	  	<div class="col-lg-6">
+	  		<select class="form-control select options"></select>
+	  	</div>
+
+			
+	</script>
+
+
+	<!-- Parametros - SubtipoServicio - Opciones -->
+	<script type="text/template" id="template_ParametrosSubtipoServicioItemView"> 
+		<%= _label %>
+	</script>
+
+
+
+	<!-- Parametros - EstadoSolicitud -->
+	<script type="text/template" id="template_ParametrosEstadoSolicitudView"> 
+		<label  class="col-lg-4 control-label">Estado Solicitud:</label>
+	  	<div class="col-lg-6">
+	  		<select class="form-control select options"></select>
+	  	</div>
+
+			
+	</script>
+
+
+	<!-- Parametros - EstadoSolicitud - Opciones -->
+	<script type="text/template" id="template_ParametrosEstadoSolicitudItemView"> 
+		<%= _label %>
+	</script>
+
+</body>
+</html>
