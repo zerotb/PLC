@@ -150,6 +150,7 @@ App.collections.SolicitudesServicios = Backbone.Collection.extend({
 
 	url: function() {
 		//return "http://testphptide.azurewebsites.net/test/test/index.php/apiplc/persona"
+		
 		var myurl =  App.baseapiurl + "/servicios/"+this.servicioId+"/solicitudes";
 		if (this.filter.length > 0) {
 			myurl = myurl+"?";

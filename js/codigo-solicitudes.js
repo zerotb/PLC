@@ -28,7 +28,7 @@ App.views.SolicitudesMainView = Backbone.View.extend({
 		this.serviciosSolicitadosListView = new App.views.SolicitudesServiciosSolicitadosListView({collection:this.solicitudes})
 		this.$(".servicios_solicitados").html(this.serviciosSolicitadosListView.$el)
 
-		this.filtrarSolicitudes();
+		this.filtrarSolicitudes([]);
 
 	},
 
